@@ -34,6 +34,8 @@ namespace testWinApp {
 				delete components;
 			}
 		}
+	private: System::Windows::Forms::ColorDialog^ colorDialog1;
+	protected:
 
 	private:
 		/// <summary>
@@ -48,13 +50,14 @@ namespace testWinApp {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->colorDialog1 = (gcnew System::Windows::Forms::ColorDialog());
 			this->SuspendLayout();
 			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1040, 526);
+			this->ClientSize = System::Drawing::Size(470, 588);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->ResumeLayout(false);
