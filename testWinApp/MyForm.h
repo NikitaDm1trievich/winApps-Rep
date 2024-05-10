@@ -37,6 +37,28 @@ namespace testWinApp {
 	private: System::Windows::Forms::ColorDialog^ colorDialog1;
 	protected:
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+	protected:
+
+
+
+
+
+
+	protected:
+
 	private:
 		/// <summary>
 		/// Обязательная переменная конструктора.
@@ -50,19 +72,25 @@ namespace testWinApp {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->colorDialog1 = (gcnew System::Windows::Forms::ColorDialog());
 			this->SuspendLayout();
 			// 
 			// MyForm
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			resources->ApplyResources(this, L"$this");
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(470, 588);
+			this->ForeColor = System::Drawing::SystemColors::ControlDark;
 			this->Name = L"MyForm";
-			this->Text = L"MyForm";
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
-	};
+	private: System::Void checkBox1_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void checkedListBox1_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+};
 }
