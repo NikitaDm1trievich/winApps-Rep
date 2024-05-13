@@ -583,7 +583,7 @@ namespace testWinApp {
 				if (second_num == 0) {
 					this->resultBar->Text = "Неопределено";
 					this->first_Num = 0;
-
+					
 					changeAvMath(false);
 
 				}
@@ -596,7 +596,7 @@ namespace testWinApp {
 				break;
 			}
 
-			if (resNull) {
+			if (!resNull && (second_num != 0 && this->user_action != '/')) {
 
 				this->resultBar->Text = System::Convert::ToString(res);
 				this->first_Num = res;
