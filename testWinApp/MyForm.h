@@ -583,7 +583,7 @@ namespace testWinApp {
 				if (second_num == 0) {
 					this->resultBar->Text = "Неопределено";
 					this->first_Num = 0;
-					// smth
+
 					changeAvMath(false);
 
 				}
