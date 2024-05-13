@@ -8,6 +8,7 @@ namespace testWinApp {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Diagnostics;
 
 	/// <summary>
 	/// Сводка для MyForm
@@ -80,6 +81,8 @@ namespace testWinApp {
 
 	private: int first_Num;
 	private: char user_action;
+	private: System::Windows::Forms::LinkLabel^ linkGithub;
+
 
 	//- NDG 20240513
 
@@ -150,6 +153,7 @@ namespace testWinApp {
 			this->buttonRut = (gcnew System::Windows::Forms::Button());
 			this->buttonSquare = (gcnew System::Windows::Forms::Button());
 			this->buttonInvDeg = (gcnew System::Windows::Forms::Button());
+			this->linkGithub = (gcnew System::Windows::Forms::LinkLabel());
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -427,11 +431,23 @@ namespace testWinApp {
 			this->buttonInvDeg->Name = L"buttonInvDeg";
 			this->buttonInvDeg->UseVisualStyleBackColor = false;
 			// 
+			// linkGithub
+			// 
+			this->linkGithub->ActiveLinkColor = System::Drawing::Color::Goldenrod;
+			resources->ApplyResources(this->linkGithub, L"linkGithub");
+			this->linkGithub->LinkColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(64)), static_cast<System::Int32>(static_cast<System::Byte>(64)),
+				static_cast<System::Int32>(static_cast<System::Byte>(64)));
+			this->linkGithub->Name = L"linkGithub";
+			this->linkGithub->TabStop = true;
+			this->linkGithub->VisitedLinkColor = System::Drawing::Color::PaleTurquoise;
+			this->linkGithub->Click += gcnew System::EventHandler(this, &MyForm::btnGitHub_Click);
+			// 
 			// MyForm
 			// 
 			resources->ApplyResources(this, L"$this");
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ButtonFace;
+			this->Controls->Add(this->linkGithub);
 			this->Controls->Add(this->buttonDel);
 			this->Controls->Add(this->buttonRut);
 			this->Controls->Add(this->buttonSquare);
@@ -460,6 +476,7 @@ namespace testWinApp {
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->panel1->ResumeLayout(false);
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -476,14 +493,16 @@ namespace testWinApp {
 
 		Button^ button = safe_cast <Button^>(sender);
 
-		if (this->resultBar->Text == "0")
+		if (this->resultBar->Text == "0" || this->resultBar->Text == "Неопределено") {
 
 			this->resultBar->Text = button->Text;
 
-		else
+			changeAvMath(true);
+		}
+		else {
 
 			this->resultBar->Text = this->resultBar->Text + button->Text;
-
+		}
 	}
 
 	private: System::Void btnClear_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -518,14 +537,20 @@ namespace testWinApp {
 
 	private: System::Void btnDel_Click(System::Object^ sender, System::EventArgs^ e) {
 
-		if (this->resultBar->Text->Length > 1)
+		if (this->resultBar->Text == "Неопределено") { this->resultBar->Text = "0"; changeAvMath(true);}
+		else {
 
-			this->resultBar->Text = this->resultBar->Text->Remove(this->resultBar->Text->Length - 1);
+			if (this->resultBar->Text->Length > 1) {
 
-		else
+				this->resultBar->Text = this->resultBar->Text->Remove(this->resultBar->Text->Length - 1);
 
-			this->resultBar->Text = "0";
+			}
+			else {
 
+				this->resultBar->Text = "0";
+
+			}
+		}
 	}
 
 	private: System::Void mathAction(char action) {
@@ -540,22 +565,63 @@ namespace testWinApp {
 
 	private: System::Void btnCalc_Click(System::Object^ sender, System::EventArgs^ e) {
 
-		int secord_num = System::Convert::ToInt32(this->resultBar->Text);
-		int res;
+		bool resNull = this->resultBar->Text == "Неопределено";
 
-		switch (this->user_action) {
+		if (resNull) {this->resultBar->Text = "0";}
+		else {
 
-		case '+': res = this->first_Num + secord_num; break;
-		case '-': res = this->first_Num - secord_num; break;
-		case '*': res = this->first_Num * secord_num; break;
-		case '/': res = this->first_Num / secord_num; break;
-		
+			int second_num = System::Convert::ToInt32(this->resultBar->Text);
+			int res;
+
+			switch (this->user_action) {
+
+			case '+': res = this->first_Num + second_num; break;
+			case '-': res = this->first_Num - second_num; break;
+			case '*': res = this->first_Num * second_num; break;
+			case '/':
+
+				if (second_num == 0) {
+					this->resultBar->Text = "Неопределено";
+					this->first_Num = 0;
+
+					changeAvMath(false);
+
+				}
+				else {
+					res = this->first_Num / second_num;
+
+					this->resultBar->Text = System::Convert::ToString(res);
+					this->first_Num = res;
+				}
+				break;
+			}
+
+			if (resNull) {
+
+				this->resultBar->Text = System::Convert::ToString(res);
+				this->first_Num = res;
+
+			}
 		}
-
-		this->resultBar->Text = System::Convert::ToString(res);
-
-		this->first_Num = res;
 	}
 
+	private: System::Void btnGitHub_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		System::Diagnostics::Process::Start(this->linkGithub->Text);
+
+	}
+
+	private: System::Void changeAvMath(bool paramValue) {
+
+		this->buttonInvDeg->Enabled		= paramValue;
+		this->buttonMinus->Enabled		= paramValue;
+		this->buttonMult->Enabled		= paramValue;
+		this->buttonPlus->Enabled		= paramValue;
+		this->buttonSquare->Enabled		= paramValue;
+		this->buttonNegate->Enabled		= paramValue;
+		this->buttonPart->Enabled		= paramValue;
+		this->buttonRut->Enabled		= paramValue;
+		this->buttonDiv->Enabled		= paramValue;
+	}
 };
 }
