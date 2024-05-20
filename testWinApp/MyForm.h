@@ -80,7 +80,7 @@ namespace testWinApp {
 	//+ NDG 20240513
 
 	private: int first_Num;
-	private: char user_action;
+	private: char user_action = ' ';
 	private: System::Windows::Forms::LinkLabel^ linkGithub;
 
 
@@ -564,6 +564,8 @@ namespace testWinApp {
 	}
 
 	private: System::Void btnCalc_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		if (this->user_action = ' ') { return; }
 
 		bool resNull = this->resultBar->Text == "Неопределено";
 
